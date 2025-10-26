@@ -2,6 +2,26 @@
 
 A comprehensive web application to track and manage relationships with 3000+ billionaires worldwide. Features secure user authentication, an SQL database, and a modern web interface.
 
+## Quick Start
+
+**Get started in 30 seconds:**
+
+```bash
+# Linux/Mac
+./start.sh
+
+# Windows
+start.bat
+```
+
+Then open http://localhost:5000
+
+📖 **Documentation:**
+- [Quick Start Guide](QUICKSTART.md) - Get running in 2 minutes
+- [Deployment Guide](DEPLOYMENT.md) - Deploy to production (Heroku, AWS, Docker, etc.)
+
+---
+
 ## Features
 
 - **User Authentication**: Secure registration and login system with password hashing
