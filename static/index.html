@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billionaire Relationship Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Login/Register Section -->
+    <div id="auth-section">
+        <div class="auth-container">
+            <h1>Billionaire Relationship Tracker</h1>
+            <p class="subtitle">Track and manage your relationships with 3000+ billionaires</p>
+
+            <!-- Login Form -->
+            <div id="login-form" class="auth-form">
+                <h2>Login</h2>
+                <form onsubmit="login(event)">
+                    <input type="text" id="login-username" placeholder="Username or Email" required>
+                    <input type="password" id="login-password" placeholder="Password" required>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+                <p class="switch-form">Don't have an account? <a href="#" onclick="showRegisterForm()">Register</a></p>
+            </div>
+
+            <!-- Register Form -->
+            <div id="register-form" class="auth-form" style="display: none;">
+                <h2>Register</h2>
+                <form onsubmit="register(event)">
+                    <input type="text" id="register-username" placeholder="Username" required>
+                    <input type="email" id="register-email" placeholder="Email" required>
+                    <input type="password" id="register-password" placeholder="Password (min 6 chars)" required>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </form>
+                <p class="switch-form">Already have an account? <a href="#" onclick="showLoginForm()">Login</a></p>
+            </div>
+
+            <div id="auth-message" class="message"></div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="app-section" style="display: none;">
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <h1>Billionaire Tracker</h1>
+                <div class="user-info">
+                    <span id="username-display"></span>
+                    <button onclick="logout()" class="btn btn-secondary">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="tabs">
+            <button class="tab-btn active" onclick="showTab('billionaires')">Browse Billionaires</button>
+            <button class="tab-btn" onclick="showTab('relationships')">My Relationships</button>
+            <button class="tab-btn" onclick="showTab('stats')">Statistics</button>
+        </nav>
+
+        <!-- Billionaires Tab -->
+        <div id="billionaires-tab" class="tab-content active">
+            <div class="container">
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="Search billionaires by name, company, or source...">
+                    <button onclick="searchBillionaires()" class="btn btn-primary">Search</button>
+                    <button onclick="resetSearch()" class="btn btn-secondary">Reset</button>
+                </div>
+
+                <div class="filters">
+                    <select id="country-filter">
+                        <option value="">All Countries</option>
+                    </select>
+                    <select id="category-filter">
+                        <option value="">All Categories</option>
+                    </select>
+                    <button onclick="applyFilters()" class="btn btn-primary">Apply Filters</button>
+                </div>
+
+                <div id="billionaires-list" class="list-container"></div>
+                <div id="pagination" class="pagination"></div>
+            </div>
+        </div>
+
+        <!-- Relationships Tab -->
+        <div id="relationships-tab" class="tab-content">
+            <div class="container">
+                <h2>My Billionaire Relationships</h2>
+                <div class="filters">
+                    <select id="status-filter">
+                        <option value="">All Statuses</option>
+                        <option value="prospect">Prospect</option>
+                        <option value="contacted">Contacted</option>
+                        <option value="in-discussion">In Discussion</option>
+                        <option value="partner">Partner</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                    <select id="priority-filter">
+                        <option value="">All Priorities</option>
+                        <option value="high">High</option>
+                        <option value="medium">Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+                    <button onclick="filterRelationships()" class="btn btn-primary">Apply Filters</button>
+                </div>
+                <div id="relationships-list" class="list-container"></div>
+            </div>
+        </div>
+
+        <!-- Statistics Tab -->
+        <div id="stats-tab" class="tab-content">
+            <div class="container">
+                <h2>Billionaire Statistics</h2>
+                <div id="stats-content" class="stats-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Relationship Modal -->
+    <div id="relationship-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeRelationshipModal()">&times;</span>
+            <h2 id="modal-title">Add Relationship</h2>
+            <form id="relationship-form" onsubmit="saveRelationship(event)">
+                <input type="hidden" id="modal-billionaire-id">
+                <input type="hidden" id="modal-relationship-id">
+
+                <div class="form-group">
+                    <label>Billionaire:</label>
+                    <p id="modal-billionaire-name" class="billionaire-name"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="modal-status">Relationship Status:</label>
+                    <select id="modal-status">
+                        <option value="prospect">Prospect</option>
+                        <option value="contacted">Contacted</option>
+                        <option value="in-discussion">In Discussion</option>
+                        <option value="partner">Partner</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="modal-priority">Priority:</label>
+                    <select id="modal-priority">
+                        <option value="high">High</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="modal-notes">Notes:</label>
+                    <textarea id="modal-notes" rows="4"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="modal-last-contact">Last Contact Date:</label>
+                    <input type="date" id="modal-last-contact">
+                </div>
+
+                <div class="form-group">
+                    <label for="modal-next-followup">Next Follow-up Date:</label>
+                    <input type="date" id="modal-next-followup">
+                </div>
+
+                <div class="form-group">
+                    <label for="modal-tags">Tags (comma-separated):</label>
+                    <input type="text" id="modal-tags" placeholder="e.g., tech, investor, philanthropist">
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" onclick="closeRelationshipModal()" class="btn btn-secondary">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
