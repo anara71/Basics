@@ -12,7 +12,7 @@ api_bp = Blueprint('api', __name__)
 def get_billionaires():
     """Get all billionaires with optional filtering and search"""
     try:
-        user_id = get_jwt_identity()
+        user_id = int(get_jwt_identity())
 
         # Get query parameters
         page = request.args.get('page', 1, type=int)
@@ -119,7 +119,7 @@ def get_stats():
 def get_relationships():
     """Get all relationships for the current user"""
     try:
-        user_id = get_jwt_identity()
+        user_id = int(get_jwt_identity())
 
         # Get query parameters
         page = request.args.get('page', 1, type=int)
@@ -158,7 +158,7 @@ def get_relationships():
 def create_relationship():
     """Create or update a relationship with a billionaire"""
     try:
-        user_id = get_jwt_identity()
+        user_id = int(get_jwt_identity())
         data = request.get_json()
 
         billionaire_id = data.get('billionaire_id')
@@ -231,7 +231,7 @@ def create_relationship():
 def get_relationship(relationship_id):
     """Get a specific relationship"""
     try:
-        user_id = get_jwt_identity()
+        user_id = int(get_jwt_identity())
 
         relationship = BillionaireRelationship.query.filter_by(
             id=relationship_id,
@@ -252,7 +252,7 @@ def get_relationship(relationship_id):
 def update_relationship(relationship_id):
     """Update a relationship"""
     try:
-        user_id = get_jwt_identity()
+        user_id = int(get_jwt_identity())
         data = request.get_json()
 
         relationship = BillionaireRelationship.query.filter_by(
@@ -295,7 +295,7 @@ def update_relationship(relationship_id):
 def delete_relationship(relationship_id):
     """Delete a relationship"""
     try:
-        user_id = get_jwt_identity()
+        user_id = int(get_jwt_identity())
 
         relationship = BillionaireRelationship.query.filter_by(
             id=relationship_id,
